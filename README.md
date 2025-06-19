@@ -1,0 +1,1 @@
+Señalador de estrella
