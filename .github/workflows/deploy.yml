@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ master ] # Cambia por tu rama principal (main/master)
+    branches: [ main ] # Cambia por tu rama principal (main/master)
 
 jobs:
   deploy:
