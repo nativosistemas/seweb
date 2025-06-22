@@ -1,10 +1,11 @@
 /*import { AuthProvider } from './context/AuthContext';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {
   return (
     <AuthProvider>
       <Router>
-        <AppRoutes />
+        <AuthProvider />
       </Router>
     </AuthProvider>
   );
@@ -12,18 +13,12 @@ function App() {
 
 export default App; // Esta línea es crucial
 */
-import logo from './logo.svg';
-import './App.css';
+import Login from "./components/Login";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        {/* <img src={logo} className="App-logo" alt="logo" /> */}
-        <p>
-          Hola Mundo
-        </p>
-      </header>
+      <Login />
     </div>
   );
 }
