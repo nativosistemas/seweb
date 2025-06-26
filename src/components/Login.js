@@ -54,10 +54,10 @@ const Login = () => {
 
                             <Form onSubmit={handleSubmit}>
                                 <Form.Group className="mb-3" controlId="formEmail">
-                                    <Form.Label>Email</Form.Label>
+                                    <Form.Label>Usuario</Form.Label>
                                     <Form.Control
                                         type="text"
-                                        placeholder="nombre"
+                                        placeholder="usuario"
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                     />
@@ -67,7 +67,7 @@ const Login = () => {
                                     <Form.Label>Contraseña</Form.Label>
                                     <Form.Control
                                         type="password"
-                                        placeholder="Contraseña"
+                                        placeholder="contraseña"
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
                                     />
