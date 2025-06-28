@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import { Form, Button, Card, Alert, Container, Row, Col } from "react-bootstrap";
 
 const Login = () => {
@@ -6,7 +7,7 @@ const Login = () => {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
-
+  const navigate = useNavigate();
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError("");
@@ -34,7 +35,8 @@ const Login = () => {
             console.log("Respuesta exitosa:", data);
             // Guardar token en localStorage o contexto
             localStorage.setItem("token", data.token);
-
+            localStorage.setItem("user", { name: email, pass: password });
+            navigate('/dashboard');
         } catch (error) {
             setError("Credenciales incorrectas");
         } finally {
