@@ -3,7 +3,7 @@ import { ListGroup, Card } from 'react-bootstrap';
 
 export function Estrellas() {
     const [estrellas, setEstrellas] = useState([]);
-    const token = localStorage.getItem('token');
+    const [token, setToken] = useState(() => localStorage.getItem('token'));//const token = localStorage.getItem('token');
 
     useEffect(() => {
         fetch("https://estrellas.duckdns.org/estrellas", {
@@ -16,7 +16,7 @@ export function Estrellas() {
             .then((res) => res.json())
             .then((data) => setEstrellas(data))
             .catch((err) => console.error("Error:", err));;
-    }, []); // 👈 El array vacío hace que esto se ejecute solo una vez al montar
+    }, [token]); 
 
     return (
         <div className="container mt-4">
