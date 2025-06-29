@@ -3,7 +3,7 @@ import { ListGroup, Card } from 'react-bootstrap';
 
 export function Estrellas() {
     const [estrellas, setEstrellas] = useState([]);
-    const [token, setToken] = useState(() => localStorage.getItem('token'));//const token = localStorage.getItem('token');
+    const [token] = useState(() => localStorage.getItem('token'));//const token = localStorage.getItem('token');
 
     useEffect(() => {
         fetch("https://estrellas.duckdns.org/estrellas", {
