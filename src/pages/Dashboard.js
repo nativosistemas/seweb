@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Card, Navbar, Nav, Offcanvas, Button } from 'react-bootstrap';
 import { BarChart, PieChart } from '../components/Charts'; // Componentes de gráficos que crearemos después
+import { Estrellas } from '../components/Estrellas';
 import { FiLogOut, FiHome, FiUsers, FiSettings, FiPieChart } from 'react-icons/fi';
 
 const Dashboard = () => {
@@ -110,6 +111,11 @@ const Dashboard = () => {
                     </Card.Text>
                   </Card.Body>
                 </Card>
+              </Col>
+            </Row>
+            <Row>
+              <Col md={12}>
+              <Estrellas></Estrellas>
               </Col>
             </Row>
 

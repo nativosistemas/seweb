@@ -34,7 +34,7 @@ const Login = () => {
             const data = await response.json();
             console.log("Respuesta exitosa:", data);
             // Guardar token en localStorage o contexto
-            localStorage.setItem("token", data.token);
+            localStorage.setItem("token", data);
             localStorage.setItem("user", { name: email, pass: password });
             navigate('/dashboard');
         } catch (error) {
