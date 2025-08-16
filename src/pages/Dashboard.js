@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Container, Row, Col, Card, Navbar, Nav, Button } from 'react-bootstrap';
-import { BarChart, PieChart } from '../components/Charts'; // Componentes de gráficos que crearemos después
+import { Container, Row, Col,  Navbar, Nav, Button } from 'react-bootstrap';
+//import { BarChart, PieChart } from '../components/Charts'; // Componentes de gráficos que crearemos después
 import { Estrellas } from '../components/Estrellas';
 import { FiLogOut, FiHome, FiUsers, FiSettings, FiPieChart } from 'react-icons/fi';
 
