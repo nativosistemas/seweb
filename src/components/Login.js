@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { Form, Button, Card, Alert, Container, Row, Col } from "react-bootstrap";
+import { getUrl } from './utils';
 
 const Login = () => {
     const [email, setEmail] = useState("");
@@ -21,7 +22,7 @@ const Login = () => {
 
         setLoading(true);
         try {
-            const response = await fetch("https://estrellas.duckdns.org/login", {
+            const response = await fetch(getUrl() + "/login", { //https://estrellas.duckdns.org/login
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

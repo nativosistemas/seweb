@@ -64,9 +64,9 @@ const Dashboard = () => {
 
           {/* Contenido Principal */}
           <Col md={10} className="ms-sm-auto px-md-4 py-3">
-            <h2 className="mb-4">Resumen General</h2>
+            {/*  <h2 className="mb-4">Resumen General</h2>*/}
             
-            {/* Tarjetas de Resumen */}
+            {/* Tarjetas de Resumen 
             <Row className="mb-4">
               <Col md={3}>
                 <Card className="text-white bg-primary mb-3">
@@ -113,13 +113,14 @@ const Dashboard = () => {
                 </Card>
               </Col>
             </Row>
+            */}
             <Row>
               <Col md={12}>
               <Estrellas></Estrellas>
               </Col>
             </Row>
 
-            {/* Gráficos */}
+            {/* Gráficos
             <Row>
               <Col md={8}>
                 <Card className="mb-4">
@@ -138,6 +139,7 @@ const Dashboard = () => {
                 </Card>
               </Col>
             </Row>
+             */}
           </Col>
         </Row>
       </Container>

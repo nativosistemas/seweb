@@ -4,6 +4,7 @@ import { Navigate } from 'react-router-dom';
 import Login from "./components/Login";
 import Dashboard from './pages/Dashboard';
 import PrivateRoute from './components/PrivateRoute';
+import './App.css';
 
 function App() {
   return (
