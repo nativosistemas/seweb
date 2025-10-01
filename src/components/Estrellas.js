@@ -49,7 +49,7 @@ export function Estrellas() {
                 .then((res) => res.json())
                 .then((data) => { setTitulo("Resultado"); setMensajeCardClick(data.msg); })
                 .catch((err) => { console.error("Error:", err);
-                     console.log("Respuesta exitosa:", data); })
+                     console.log("Error:", err); })
                 .finally(() => { localStorage.setItem("Estrellas_onClick", null); setIsLoading(false); });
             setItemExpandido(itemExpandido === i ? null : i); //setItemExpandido(null);
             //setItemExpandido(null);
