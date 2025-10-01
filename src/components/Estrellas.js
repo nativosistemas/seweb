@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Row, Col, ListGroup, Card, Modal, Spinner } from 'react-bootstrap';
+import { Row, Col, ListGroup, Card} from 'react-bootstrap';
 import { getUrl ,getToken} from './utils';
 import { ModalAlert } from "./ModalAlert";
 

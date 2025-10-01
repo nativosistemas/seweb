@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 export function RangeValue({ initialValue = 0, initialLabel = "Valor", onValueChange }) {
   // 1. Usa `useState` para crear una variable de estado para el valor del rango
   const [valorRango, setValorRango] = useState(initialValue); // Valor inicial
-  const [labelName, setLabelName] = useState(initialLabel); // Valor inicial
+  const [labelName] = useState(initialLabel); // Valor inicial
   // 2. Crea un controlador de eventos para actualizar el estado
   const handleRangeChange = (event) => {
     const nuevoValor = event.target.value;
