@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { Row, Col, ListGroup, Card} from 'react-bootstrap';
-import { getUrl ,getToken} from './utils';
+import { Row, Col, ListGroup, Card } from 'react-bootstrap';
+import { getUrl, getToken } from './utils';
 import { ModalAlert } from "./ModalAlert";
 
 export function Estrellas() {
     const [estrellas, setEstrellas] = useState([]);
-   // const [token] = useState(() => localStorage.getItem('token'));//const token = localStorage.getItem('token');
+    // const [token] = useState(() => localStorage.getItem('token'));//const token = localStorage.getItem('token');
     const [estrellas_onClick] = useState(() => localStorage.getItem(null));
     const [titulo, setTitulo] = useState('Cargando...');
     const [itemExpandido, setItemExpandido] = useState(null);
@@ -48,7 +48,8 @@ export function Estrellas() {
             })
                 .then((res) => res.json())
                 .then((data) => { setTitulo("Resultado"); setMensajeCardClick(data.msg); })
-                .catch((err) => console.error("Error:", err))
+                .catch((err) => { console.error("Error:", err);
+                     console.log("Respuesta exitosa:", data); })
                 .finally(() => { localStorage.setItem("Estrellas_onClick", null); setIsLoading(false); });
             setItemExpandido(itemExpandido === i ? null : i); //setItemExpandido(null);
             //setItemExpandido(null);
