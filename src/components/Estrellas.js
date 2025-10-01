@@ -1,33 +1,36 @@
 import { useEffect, useState } from "react";
-import { Row, Col, ListGroup, Card } from 'react-bootstrap';
-import { getUrl } from './utils';
+import { Row, Col, ListGroup, Card, Modal, Spinner } from 'react-bootstrap';
+import { getUrl ,getToken} from './utils';
+import { ModalAlert } from "./ModalAlert";
 
 export function Estrellas() {
     const [estrellas, setEstrellas] = useState([]);
-    const [token] = useState(() => localStorage.getItem('token'));//const token = localStorage.getItem('token');
-    const [estrellas_onClick] = useState(() => localStorage.getItem('Estrellas_onClick'));
+   // const [token] = useState(() => localStorage.getItem('token'));//const token = localStorage.getItem('token');
+    const [estrellas_onClick] = useState(() => localStorage.getItem(null));
     const [titulo, setTitulo] = useState('Cargando...');
     const [itemExpandido, setItemExpandido] = useState(null);
     const [mensajeCardClick, setMensajeCardClick] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         fetch(getUrl() + "/estrellas", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + token // Asegúrate de que el token esté en el formato correcto
+                "Authorization": "Bearer " + getToken() // Asegúrate de que el token esté en el formato correcto
             }
         })
             .then((res) => res.json())
             .then((data) => setEstrellas(data))
             .catch((err) => console.error("Error:", err));
-    }, [token]);
+    }, []);
 
     const toggleExpandir = (e, i) => {
 
         if (estrellas_onClick === null) {
-            //e.hip
-
+            setTitulo('Cargando...');
+            setMensajeCardClick(null);
+            setIsLoading(true);
             localStorage.setItem("Estrellas_onClick", i);
 
             var data = {};
@@ -39,14 +42,14 @@ export function Estrellas() {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": "Bearer " + token // Asegúrate de que el token esté en el formato correcto
+                    "Authorization": "Bearer " + getToken() // Asegúrate de que el token esté en el formato correcto
                 },
                 body: json
             })
                 .then((res) => res.json())
-                .then((data) => { setTitulo("Resultado"); setMensajeCardClick(data.msg);})
+                .then((data) => { setTitulo("Resultado"); setMensajeCardClick(data.msg); })
                 .catch((err) => console.error("Error:", err))
-                .finally(() => {   localStorage.setItem("Estrellas_onClick", null);});
+                .finally(() => { localStorage.setItem("Estrellas_onClick", null); setIsLoading(false); });
             setItemExpandido(itemExpandido === i ? null : i); //setItemExpandido(null);
             //setItemExpandido(null);
         }//  if (itemExpandido == null){
@@ -70,6 +73,7 @@ export function Estrellas() {
                             action={e.visible} // Solo hacerlo clickeable si es visible
                             className={`list-group-item custom-card ${disabled} ${cssColor}`}
                             onClick={() => toggleExpandir(e, i)}
+                            disabled={isLoading}
                         >
                             <Card className="mb-3">
                                 <Card.Body>
@@ -88,7 +92,7 @@ export function Estrellas() {
                                         </small>
                                     </Card.Text>
                                     {itemExpandido === i && (
-                                        <Card style={{ marginTop: '1rem', backgroundColor: '#f8f9fa' }}>
+                                        <Card style={{ marginTop: '1rem', backgroundColor: 'rgba(25, 135, 84, 0.7)' }}>
                                             <Card.Body>
                                                 <Card.Title>{titulo}</Card.Title>
                                                 <Card.Text>
@@ -103,6 +107,7 @@ export function Estrellas() {
                     );
                 })}
             </ListGroup>
+            <ModalAlert isLoading={isLoading}></ModalAlert>
         </div>
     );
 }

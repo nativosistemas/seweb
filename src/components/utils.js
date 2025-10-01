@@ -3,3 +3,6 @@ var url = 'https://estrellas.duckdns.org' // https://estrellas.duckdns.org  //  
 export function getUrl() {
     return url;
 }
+export  const getToken = () => {
+    return localStorage.getItem('token');
+}

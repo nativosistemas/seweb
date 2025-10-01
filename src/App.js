@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Navigate } from 'react-router-dom';
 import Login from "./components/Login";
 import Dashboard from './pages/Dashboard';
+import Ajustes from './pages/Ajustes';
 import PrivateRoute from './components/PrivateRoute';
 import './App.css';
 
@@ -16,6 +17,14 @@ function App() {
           element={
             <PrivateRoute>
               <Dashboard />
+            </PrivateRoute>
+          }
+        />
+                <Route
+          path="/ajustes"
+          element={
+            <PrivateRoute>
+              <Ajustes />
             </PrivateRoute>
           }
         />

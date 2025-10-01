@@ -51,9 +51,9 @@ const Dashboard = () => {
                 <FiHome className="me-2" />
                 Inicio
               </Nav.Link>
-              <Nav.Link href="#" className="mb-2">
+              <Nav.Link href="ajustes" className="mb-2">
                 <FiUsers className="me-2" />
-                Usuarios
+                Ajustes
               </Nav.Link>
               <Nav.Link href="#" className="mb-2">
                 <FiSettings className="me-2" />

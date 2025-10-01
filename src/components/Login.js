@@ -39,7 +39,7 @@ const Login = () => {
             localStorage.setItem("user", { name: email, pass: password });
             navigate('/dashboard');
         } catch (error) {
-            setError("Credenciales incorrectas");
+            setError("Error en la petición");
         } finally {
             setLoading(false);
         }
