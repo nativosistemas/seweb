@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 
-export function RangeValue({ initialValue = 0, initialLabel = "Valor", onValueChange }) {
+export function RangeValue({ initialValorRango ,valor, initialLabel = "Valor", onValueChange }) {
   // 1. Usa `useState` para crear una variable de estado para el valor del rango
-  const [valorRango, setValorRango] = useState(initialValue); // Valor inicial
+ // const [valorRango, setValorRango] = useState(initialValorRango); // Valor inicial
   const [labelName] = useState(initialLabel); // Valor inicial
   // 2. Crea un controlador de eventos para actualizar el estado
   const handleRangeChange = (event) => {
     const nuevoValor = event.target.value;
-    setValorRango(nuevoValor);
+    //setValorRango(nuevoValor);
     if (onValueChange) {
       onValueChange(Number(nuevoValor)); // Convertir a número es buena práctica
     }
@@ -26,13 +26,13 @@ export function RangeValue({ initialValue = 0, initialLabel = "Valor", onValueCh
             min="-45"
             max="225"
             step="0.01"
-            value={valorRango} // 3. Vincula el input al estado
+            value={valor} // 3. Vincula el input al estado
             id="volumeRange"
             onChange={handleRangeChange} // 4. Asigna el controlador al evento `onChange`
           />
           {/* Muestra el valor del estado en un elemento paralelo */}
           <span id="rangeValue" className="ms-3">
-            {valorRango}
+            {valor}
           </span>
         </div>
       </div>
