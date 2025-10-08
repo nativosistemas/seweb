@@ -109,13 +109,13 @@ export default function Ajustes() {
       })
         .then((res) => res.json())
         .then((data) => {
-          if (data.msg == "Ok") {
+          if (data.msg  === "Ok") {
             setTitulo("Listo"); setMensajeCardClick("Ángulos actualizados");
            } else {
             setTitulo("Resultado"); setMensajeCardClick(data.msg);
           }
-          if (data.h_now!=null && data.h_now!= anguloH){setAnguloH(data.h_now);}
-          if (data.v_now!=null && data.v_now!= anguloV){setAnguloV(data.v_now);}
+          if (data.h_now !== null && data.h_now !== anguloH) { setAnguloH(data.h_now); }
+          if (data.v_now !== null && data.v_now !== anguloV) { setAnguloV(data.v_now); }
         })
         .catch((err) => { console.error("Error:", err); setTitulo(null); })
         .finally(() => { setIsLoading(false); });
