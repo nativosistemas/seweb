@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 //import { Form, Button, Row, Col } from 'react-bootstrap';
 //import { useNavigate } from 'react-router-dom';
 import { RangeValue } from '../components/RangeValue';
@@ -14,7 +14,7 @@ export default function Ajustes() {
   const [titulo, setTitulo] = useState(null);
   const [mensajeCardClick, setMensajeCardClick] = useState(null);
   // 2. Crear la función que actualiza este estado
- const isInitialMount = useRef(true);
+ //const isInitialMount = useRef(true);
     // 2. Usa el Hook useEffect
   useEffect(() => {
     // Coloca la llamada a la función aquí
