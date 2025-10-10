@@ -51,7 +51,7 @@ const Dashboard = () => {
                 <FiHome className="me-2" />
                 Inicio
               </Nav.Link>
-              <Nav.Link href="ajustes" className="mb-2">
+              <Nav.Link href="../seweb#/ajustes" className="mb-2">
                 <FiUsers className="me-2" />
                 Ajustes
               </Nav.Link>
