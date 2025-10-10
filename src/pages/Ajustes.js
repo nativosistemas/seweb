@@ -11,11 +11,12 @@ export default function Ajustes() {
   const [anguloH, setAnguloH] = useState(0);
   const [anguloV, setAnguloV] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [isModo, setIsModo] = useState(true);
   const [titulo, setTitulo] = useState(null);
   const [mensajeCardClick, setMensajeCardClick] = useState(null);
   // 2. Crear la función que actualiza este estado
- //const isInitialMount = useRef(true);
-    // 2. Usa el Hook useEffect
+  //const isInitialMount = useRef(true);
+  // 2. Usa el Hook useEffect
   useEffect(() => {
     // Coloca la llamada a la función aquí
     // cargar datos iniciales
@@ -48,7 +49,7 @@ export default function Ajustes() {
   }, []); // <--- Array de dependencias vacío
   const actualizarValorH = (nuevoValor) => {
     setAnguloH(nuevoValor);
-        enviarInfoAnt(nuevoValor, anguloV);
+    enviarInfoAnt(nuevoValor, anguloV);
   };
   /*  useEffect(() => {
     // **Verificación clave:** Ignora la primera ejecución del componente.
@@ -63,13 +64,13 @@ export default function Ajustes() {
     
   }, [anguloH, anguloV]); // Depende de ambos estados
   */
-/*
-  useEffect(() => {
-    enviarInfoAnt();
-  }, [anguloH]);*/
+  /*
+    useEffect(() => {
+      enviarInfoAnt();
+    }, [anguloH]);*/
   const actualizarValorV = (nuevoValor) => {
     setAnguloV(nuevoValor);
-        enviarInfoAnt(anguloH,nuevoValor);
+    enviarInfoAnt(anguloH, nuevoValor);
   };
   /*
   useEffect(() => {
@@ -109,9 +110,9 @@ export default function Ajustes() {
       })
         .then((res) => res.json())
         .then((data) => {
-          if (data.msg  === "Ok") {
+          if (data.msg === "Ok") {
             setTitulo("Listo"); setMensajeCardClick("Ángulos actualizados");
-           } else {
+          } else {
             setTitulo("Resultado"); setMensajeCardClick(data.msg);
           }
           if (data.h_now !== null && data.h_now !== anguloH) { setAnguloH(data.h_now); }
@@ -119,20 +120,36 @@ export default function Ajustes() {
         })
         .catch((err) => { console.error("Error:", err); setTitulo(null); })
         .finally(() => { setIsLoading(false); });
-}
+    }
   }
 
+  // 3. Define el controlador de eventos (Handler)
+  const handleCheckboxChange = (event) => {
+    // a. Obtén el nuevo valor booleano (true/false)
+    const nuevoEstado = event.target.checked;
 
-return (
-  <div className="container">
-    <h3>Control de Ángulos (0&deg; a 180&deg;)</h3>
+    // b. Actualiza el estado del componente
+    setIsModo(nuevoEstado);
 
-    <RangeValue initialLabel='H' valor={anguloH}  onValueChange={actualizarValorH} ></RangeValue>
-    <RangeValue initialLabel='V' valor={anguloV} onValueChange={actualizarValorV} ></RangeValue>
 
-    {isLoading && <ModalAlert isLoading={isLoading}></ModalAlert>}
-    <CardData titulo={titulo} mensajeCardClick={mensajeCardClick}></CardData>
+  };
 
-  </div>
-);
+
+  return (
+    <div className="container">
+      <h3>Control de Ángulos (0&deg; a 180&deg;)</h3>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value={isModo} checked={isModo} id="flexCheckDefault" onChange={handleCheckboxChange}></input>
+        <label class="form-check-label" for="flexCheckDefault">
+          Modo
+        </label>
+      </div>
+      <RangeValue modo={isModo} initialLabel='H' valor={anguloH} onValueChange={actualizarValorH} ></RangeValue>
+      <RangeValue modo={isModo} initialLabel='V' valor={anguloV} onValueChange={actualizarValorV} ></RangeValue>
+
+      {isLoading && <ModalAlert isLoading={isLoading}></ModalAlert>}
+      <CardData titulo={titulo} mensajeCardClick={mensajeCardClick}></CardData>
+
+    </div>
+  );
 }
