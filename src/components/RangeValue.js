@@ -35,9 +35,11 @@ export function RangeValue({ modo = true, initialValorRango, valor, initialLabel
             min={valorMin}
             max={valorMax}
             step="1"
-            value={valor} // 3. Vincula el input al estado
+            value={valorEscrito} // 3. Vincula el input al estado
             id="volumeRange"
-            onChange={handleRangeChange} // 4. Asigna el controlador al evento `onChange`
+            onChange={handleInputChange} // 4. Asigna el controlador al evento `onChange`
+            onMouseUp={handleRangeChange}
+            onTouchEnd={handleRangeChange}
           />
           {/* Muestra el valor del estado en un elemento paralelo */}
           <span id="rangeValue" className="ms-3">
