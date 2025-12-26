@@ -149,7 +149,6 @@ export default function Ajustes() {
 
       {isLoading && <ModalAlert isLoading={isLoading}></ModalAlert>}
       <CardData titulo={titulo} mensajeCardClick={mensajeCardClick}></CardData>
-
     </div>
   );
 }

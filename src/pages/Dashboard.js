@@ -1,8 +1,8 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,Link } from 'react-router-dom';
 import { Container, Row, Col,  Navbar, Nav, Button } from 'react-bootstrap';
 //import { BarChart, PieChart } from '../components/Charts'; // Componentes de gráficos que crearemos después
-import { Estrellas } from '../components/Estrellas';
+
 import { FiLogOut, FiHome, FiUsers, FiSettings, FiPieChart } from 'react-icons/fi';
 
 const Dashboard = () => {
@@ -51,7 +51,8 @@ const Dashboard = () => {
                 <FiHome className="me-2" />
                 Inicio
               </Nav.Link>
-              <Nav.Link href="../seweb#/ajustes" className="mb-2">
+              
+              <Nav.Link  as={Link} to="/ajustes" className="mb-2">
                 <FiUsers className="me-2" />
                 Ajustes
               </Nav.Link>
@@ -116,7 +117,7 @@ const Dashboard = () => {
             */}
             <Row>
               <Col md={12}>
-              <Estrellas></Estrellas>
+            {/*   <Estrellas></Estrellas>*/}
               </Col>
             </Row>
 

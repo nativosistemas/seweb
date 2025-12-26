@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Row, Col, ListGroup, Card } from 'react-bootstrap';
-import { getUrl, getToken } from './utils';
-import { ModalAlert } from "./ModalAlert";
+import { getUrl, getToken } from '../components/utils';
+import { ModalAlert } from "../components/ModalAlert";
 
-export function Estrellas() {
+export default function Estrellas() {
     const [estrellas, setEstrellas] = useState([]);
     // const [token] = useState(() => localStorage.getItem('token'));//const token = localStorage.getItem('token');
     const [estrellas_onClick] = useState(() => localStorage.getItem(null));
@@ -59,8 +59,8 @@ export function Estrellas() {
 
 
     return (
-        <div className="container mt-4">
-            <h2 className="mb-4">Estrellas</h2>
+        <div className="container">
+            <h3 >Estrellas</h3>
             <ListGroup as="ul" className="list-group scrollable-list">
                 {estrellas.map((e, i) => {
                     // Determinar clases adicionales basadas en propiedades
@@ -76,11 +76,11 @@ export function Estrellas() {
                             onClick={() => toggleExpandir(e, i)}
                             disabled={isLoading}
                         >
-                            <Card className="mb-3">
+                            <Card >
                                 <Card.Body>
                                     <Card.Title>HIP {e.hip}</Card.Title>
                                     <Card.Text>
-                                        <h2>{e.name}</h2>
+                                        <h4>{e.name}</h4>
                                         <small>
                                             <Row>
                                                 <Col md={6}>
@@ -91,8 +91,7 @@ export function Estrellas() {
                                                 </Col>
                                             </Row>
                                         </small>
-                                    </Card.Text>
-                                    {itemExpandido === i && (
+                                        {itemExpandido === i && (
                                         <Card style={{ marginTop: '1rem', backgroundColor: 'rgba(25, 135, 84, 0.7)' }}>
                                             <Card.Body>
                                                 <Card.Title>{titulo}</Card.Title>
@@ -102,6 +101,8 @@ export function Estrellas() {
                                             </Card.Body>
                                         </Card>
                                     )}
+                                    </Card.Text>
+                                    
                                 </Card.Body>
                             </Card>
                         </ListGroup.Item>
