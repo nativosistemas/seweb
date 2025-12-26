@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Navbar, Container, Nav } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { getUrl, getToken } from '../components/utils';
@@ -110,8 +110,8 @@ const Header = () => {
         return guardado ? JSON.parse(guardado) : false;
     });
     const [laser_onClick, setLaser_onClick] = useState(false);
-    const [titulo, setTitulo] = useState('Cargando...');
-    const [mensajeCardClick, setMensajeCardClick] = useState(null);
+    //const [titulo, setTitulo] = useState('Cargando...');
+    //const [mensajeCardClick, setMensajeCardClick] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [alerta, setAlerta] = useState({ show: false, msg: "" });
     // Función para mostrar el mensaje y que desaparezca solo
@@ -126,7 +126,7 @@ const Header = () => {
         localStorage.setItem('laserState', JSON.stringify(mostrarOn));
     }, [mostrarOn]);
 
-    const fetchServoData = async () => {
+    const fetchServoData = useCallback(async () => {
         try {
             var data = {};
             //data.isLaser = 1;
@@ -165,7 +165,7 @@ const Header = () => {
         } finally {
             //   setIsLoading(false);
         }
-    };
+    }, []);
     useEffect(() => {
         // Función para obtener datos del servidor
 
@@ -175,13 +175,13 @@ const Header = () => {
         // Si necesitas actualizar periódicamente, puedes usar setInterval
         // const interval = setInterval(fetchServoData, 5000); // Actualiza cada 5 segundos
         // return () => clearInterval(interval); // Limpieza al desmontar
-    }, []); // Array vacío = se ejecuta solo al montar
+    }, [fetchServoData]); // Array vacío = se ejecuta solo al montar
 
     const onClickLaser = () => {
         if (laser_onClick === false) {
             setLaser_onClick(true);
-            setTitulo('Cargando...');
-            setMensajeCardClick(null);
+            //setTitulo('Cargando...');
+            // setMensajeCardClick(null);
             setIsLoading(true);
 
 
@@ -211,7 +211,13 @@ const Header = () => {
                     return res.json();
                 }
                 )
-                .then((data) => { setLaser_onClick(false); setMostrarOn(!mostrarOn); setTitulo("Resultado"); setMensajeCardClick(data.msg); })
+                .then((data) => {
+                    if (data.msg === "!isFoundAntTracking") { 
+                            mostrarAlerta("Dispositivo no encontrado. Asegúrate de que esté encendido y dentro del alcance.");
+                    } else {
+                        setLaser_onClick(false); setMostrarOn(!mostrarOn);  /*setMensajeCardClick(data.msg);*/
+                    }
+                })
                 .catch((err) => {
                     console.error("Error:", err);
                     console.log("Error:", err);
@@ -219,136 +225,136 @@ const Header = () => {
                 })
                 .finally(() => { setIsLoading(false); setLaser_onClick(false); });
 
-       
-              
+
+
 
 
         }
 
     };
-/*
-        if (laser_onClick === null) {
-        setTitulo('Cargando...');
-        setMensajeCardClick(null);
-        setIsLoading(true);
-        localStorage.setItem("Estrellas_onClick", i);
+    /*
+            if (laser_onClick === null) {
+            setTitulo('Cargando...');
+            setMensajeCardClick(null);
+            setIsLoading(true);
+            localStorage.setItem("Estrellas_onClick", i);
+    
+            var data = {};
+            data.hip = e.hip;
+            data.type = 'star';
+            var json = JSON.stringify(data);
+    
+            fetch(getUrl() + "/actionAnt", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + getToken() // Asegúrate de que el token esté en el formato correcto
+                },
+                body: json
+            })
+                .then((res) => res.json())
+                .then((data) => { setTitulo("Resultado"); setMensajeCardClick(data.msg); })
+                .catch((err) => { console.error("Error:", err);
+                     console.log("Error:", err); })
+                .finally(() => { localStorage.setItem("Estrellas_onClick", null); setIsLoading(false); });
+            setItemExpandido(itemExpandido === i ? null : i); //setItemExpandido(null);
+            //setItemExpandido(null);
+        }//  if (itemExpandido == null){
+        */
+    const navigate = useNavigate();
+    const handleLogout = () => {
+        localStorage.removeItem('token'); // Elimina el token de autenticación
+        localStorage.removeItem('user'); // Elimina los datos del usuario
+        navigate('/login'); // Redirige al login
+    };
 
-        var data = {};
-        data.hip = e.hip;
-        data.type = 'star';
-        var json = JSON.stringify(data);
-
-        fetch(getUrl() + "/actionAnt", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": "Bearer " + getToken() // Asegúrate de que el token esté en el formato correcto
-            },
-            body: json
-        })
-            .then((res) => res.json())
-            .then((data) => { setTitulo("Resultado"); setMensajeCardClick(data.msg); })
-            .catch((err) => { console.error("Error:", err);
-                 console.log("Error:", err); })
-            .finally(() => { localStorage.setItem("Estrellas_onClick", null); setIsLoading(false); });
-        setItemExpandido(itemExpandido === i ? null : i); //setItemExpandido(null);
-        //setItemExpandido(null);
-    }//  if (itemExpandido == null){
-    */
-const navigate = useNavigate();
-const handleLogout = () => {
-    localStorage.removeItem('token'); // Elimina el token de autenticación
-    localStorage.removeItem('user'); // Elimina los datos del usuario
-    navigate('/login'); // Redirige al login
-};
-
-return (<>      <ModalAlert isLoading={isLoading}></ModalAlert>
-    <Navbar expand="lg" sticky="top" style={{
-        backgroundColor: 'rgba(128, 128, 128, 0.6)',
-        display: 'flex',
-        flexDirection: 'column', // Importante: apila el Container y la Alerta
-        padding: 0 // Elimina padding para que la alerta toque los bordes
-    }}>
-        <Container >
-            {/*  <Navbar.Brand as={Link} to="/">Señalador de estrellas</Navbar.Brand>
+    return (<>      <ModalAlert isLoading={isLoading}></ModalAlert>
+        <Navbar expand="lg" sticky="top" style={{
+            backgroundColor: 'rgba(128, 128, 128, 0.6)',
+            display: 'flex',
+            flexDirection: 'column', // Importante: apila el Container y la Alerta
+            padding: 0 // Elimina padding para que la alerta toque los bordes
+        }}>
+            <Container >
+                {/*  <Navbar.Brand as={Link} to="/">Señalador de estrellas</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
  
                 </Navbar.Collapse>*/}
-            <Nav className="me-auto">
-                {/*<Nav.Link as={Link} to="/">Inicio</Nav.Link>
+                <Nav className="me-auto">
+                    {/*<Nav.Link as={Link} to="/">Inicio</Nav.Link>
                         <Nav.Link as={Link} to="/dashboard">Estrellas</Nav.Link>*/}
-                <Nav.Link
-                    as={Link}
-                    to="/stars"
-                    title="Estrellas"
-                >
-                    <StarIcon />
-                </Nav.Link>
-                <Nav.Link
-                    as={Link}
-                    //to="/stars"
-                    onClick={onClickLaser}
-                    title="Laser"
-                >
-                    <LaserIcon mostrarOn={mostrarOn} />
-                </Nav.Link>
-                <Nav.Link
-                    as={Link}
-                    to="/ajustes" // Cambia la ruta a donde deba ir
-                    title="Ajustes"
-                >
-                    <GearIcon />
-                </Nav.Link>
-                <Nav.Link
-                    as={Link}
-                    to="/config" // Cambia la ruta a donde deba ir
-                    title="Configuración"
-                >
-                    <ConfiguracionIcon />
-                </Nav.Link>
-            </Nav>
-            <Nav>
-                <Nav.Link
-                    onClick={handleLogout}
-                    title="Cerrar"
-                >
-                    <CloseIcon />
-                </Nav.Link>
+                    <Nav.Link
+                        as={Link}
+                        to="/stars"
+                        title="Estrellas"
+                    >
+                        <StarIcon />
+                    </Nav.Link>
+                    <Nav.Link
+                        as={Link}
+                        //to="/stars"
+                        onClick={onClickLaser}
+                        title="Laser"
+                    >
+                        <LaserIcon mostrarOn={mostrarOn} />
+                    </Nav.Link>
+                    <Nav.Link
+                        as={Link}
+                        to="/ajustes" // Cambia la ruta a donde deba ir
+                        title="Ajustes"
+                    >
+                        <GearIcon />
+                    </Nav.Link>
+                    <Nav.Link
+                        as={Link}
+                        to="/config" // Cambia la ruta a donde deba ir
+                        title="Configuración"
+                    >
+                        <ConfiguracionIcon />
+                    </Nav.Link>
+                </Nav>
+                <Nav>
+                    <Nav.Link
+                        onClick={handleLogout}
+                        title="Cerrar"
+                    >
+                        <CloseIcon />
+                    </Nav.Link>
 
-            </Nav>
+                </Nav>
 
 
 
-        </Container>
-        {/* MENSAJE TIPO BOOTSTRAP */}
-        {alerta.show && (
-            <div
-                className="alert alert-info alert-dismissible fade show w-100 m-0"
-                role="alert"
-                style={{
-                    borderRadius: 0, // Esquinas rectas para que parezca parte de la barra
-                    borderLeft: 0,
-                    borderRight: 0,
-                    fontSize: '0.9rem',
-                    padding: '10px 20px'
-                }}
-            >
-                {alerta.msg}
-                <button
-                    type="button"
-                    className="btn-close" // En Bootstrap 5 se usa btn-close
-                    onClick={() => setAlerta({ ...alerta, show: false })}
-                    aria-label="Close"
-                    style={{ float: 'right', background: 'none', border: 'none', fontWeight: 'bold' }}
+            </Container>
+            {/* MENSAJE TIPO BOOTSTRAP */}
+            {alerta.show && (
+                <div
+                    className="alert alert-info alert-dismissible fade show w-100 m-0"
+                    role="alert"
+                    style={{
+                        borderRadius: 0, // Esquinas rectas para que parezca parte de la barra
+                        borderLeft: 0,
+                        borderRight: 0,
+                        fontSize: '0.9rem',
+                        padding: '10px 20px'
+                    }}
                 >
-                    &times;
-                </button>
-            </div>
-        )}
-    </Navbar>
-</>
-);
+                    {alerta.msg}
+                    <button
+                        type="button"
+                        className="btn-close" // En Bootstrap 5 se usa btn-close
+                        onClick={() => setAlerta({ ...alerta, show: false })}
+                        aria-label="Close"
+                        style={{ float: 'right', background: 'none', border: 'none', fontWeight: 'bold' }}
+                    >
+                        &times;
+                    </button>
+                </div>
+            )}
+        </Navbar>
+    </>
+    );
 };
 
 export default Header;

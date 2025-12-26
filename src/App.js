@@ -1,6 +1,5 @@
 import React from 'react';
-import { HashRouter as Router, Routes, Route, BrowserRouter } from 'react-router-dom';
-import { Navigate } from 'react-router-dom';
+import {  Routes, Route, BrowserRouter } from 'react-router-dom';
 import Login from "./components/Login";
 import Dashboard from './pages/Dashboard';
 import Estrellas from './pages/Estrellas';
