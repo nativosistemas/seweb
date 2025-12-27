@@ -119,7 +119,7 @@ const Header = () => {
         setAlerta({ show: true, msg });
         setTimeout(() => {
             setAlerta({ show: false, msg: "" });
-        }, 4000); // 3 segundos de duración
+        }, 10000); // 10 segundos de duración
     };
 
     useEffect(() => {
@@ -141,24 +141,21 @@ const Header = () => {
                     "Authorization": "Bearer " + getToken()
                 },
                 body: json
-            })
+            }).catch((err) => {
+                mostrarAlerta("Error al obtener datos del láser: (2)" + err.message);
+            });
 
             if (!response.ok) {
 
-                mostrarAlerta("Error al obtener datos del láser");
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
+                //mostrarAlerta("Error al obtener datos del láser");
+               // throw new Error(`HTTP error! status: ${response.status}`);
+            }else{
 
             const data_response = await response.json();
             //localStorage.setItem('laserState', JSON.stringify(data_response.isLaser === 1 ? true : false));
             setMostrarOn(data_response.isLaser === 1 ? true : false);
-            //data = data_response.isLaser;
-            /*if (data.h_now != null) {
-                 setAnguloH(data.h_now);
-             }
-             if (data.v_now != null) {
-                 setAnguloV(data.v_now);
-             }*/
+            }
+
         } catch (err) {
             //  console.error("Error fetching servo data:", err);
             mostrarAlerta("Error al obtener datos del láser: (1)" + err.message);
@@ -202,7 +199,7 @@ const Header = () => {
                 .then((res) => {
                     // 1. Verificamos si la respuesta es correcta (status 200-299)
                     if (!res.ok) {
-                        mostrarAlerta("Error al obtener datos del láser()3");
+                        //mostrarAlerta("Error al obtener datos del láser()3");
                         // Al lanzar el error aquí, saltamos directamente al .catch()
                         throw new Error(`HTTP error! status: ${res.status}`);
                     }
@@ -215,13 +212,13 @@ const Header = () => {
                     if (data.msg === "!isFoundAntTracking") { 
                             mostrarAlerta("Dispositivo no encontrado. Asegúrate de que esté encendido y dentro del alcance.");
                     } else {
-                        setLaser_onClick(false); setMostrarOn(!mostrarOn);  /*setMensajeCardClick(data.msg);*/
+                        setMostrarOn(!mostrarOn); 
                     }
                 })
                 .catch((err) => {
                     console.error("Error:", err);
                     console.log("Error:", err);
-                    mostrarAlerta("Error al obtener datos del láser(2): " + err.message);
+                    mostrarAlerta("Ups, algo falló. Prueba más tarde.");
                 })
                 .finally(() => { setIsLoading(false); setLaser_onClick(false); });
 

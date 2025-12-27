@@ -30,7 +30,7 @@ const Login = () => {
                 body: JSON.stringify({ name: email, pass: password }),
             });
 
-            if (!response.ok) throw new Error("Error en la petición");
+            if (!response.ok) throw new Error("Ups, algo falló. Prueba más tarde.");
 
             const data = await response.json();
             console.log("Respuesta exitosa:", data);
@@ -39,7 +39,7 @@ const Login = () => {
             localStorage.setItem("user", { name: email, pass: password });
             navigate('/dashboard');
         } catch (error) {
-            setError("Error en la petición");
+            setError("Ups, algo falló. Prueba más tarde.");
         } finally {
             setLoading(false);
         }
