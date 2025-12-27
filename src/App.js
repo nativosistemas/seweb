@@ -11,7 +11,7 @@ import './App.css';
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/seweb">
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<Layout />}>
