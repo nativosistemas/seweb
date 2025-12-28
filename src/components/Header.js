@@ -100,7 +100,7 @@ const LaserOffIcon = () => (
 
 const LaserIcon = ({ mostrarOn }) => {
 
-    return (<> {mostrarOn ? <LaserOnIcon /> : <LaserOffIcon />} </>);
+    return (<> {!mostrarOn ? <LaserOnIcon /> : <LaserOffIcon />} </>);
 };
 
 
