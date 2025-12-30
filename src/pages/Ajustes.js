@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 //import { Form, Button, Row, Col } from 'react-bootstrap';
 //import { useNavigate } from 'react-router-dom';
 import { RangeValue } from '../components/RangeValue';
@@ -11,79 +11,68 @@ export default function Ajustes() {
   const [anguloH, setAnguloH] = useState(0);
   const [anguloV, setAnguloV] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [isModo, setIsModo] = useState(true);
   const [titulo, setTitulo] = useState(null);
   const [mensajeCardClick, setMensajeCardClick] = useState(null);
-  // 2. Crear la función que actualiza este estado
-  //const isInitialMount = useRef(true);
-  // 2. Usa el Hook useEffect
-  useEffect(() => {
-    // Coloca la llamada a la función aquí
-    // cargar datos iniciales
+
+
+
+
+  const fetchAjustes = useCallback(async () => {
     setIsLoading(true);
-    fetch(getUrl() + "/lastvalueservo", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer " + getToken()
+    setError(null);
+
+    try {
+      const response = await fetch(getUrl() + "/lastvalueservo", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + getToken()
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error en el servidor: ${response.status}`);
       }
-    })
-      .then((res) => res.json())
-      .then((data) => {
+
+      const data = await response.json();
+      //setEstrellas(data); // Guardamos el JSON en el estado
+      if (data !== null && data !== undefined) {
         if (data.h_now != null) {
           setAnguloH(data.h_now);
         }
         if (data.v_now != null) {
           setAnguloV(data.v_now);
         }
-      })
-      .catch((err) => {
-        console.error("Error:", err);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+      }
 
-    // El array de dependencias vacío [] asegura que la función
-    // se ejecute SOLAMENTE una vez, después del MONTADO inicial del componente.
-  }, []); // <--- Array de dependencias vacío
+    } catch (err) {
+      console.error("Error al obtener astros:", err);
+      //setError("No se pudieron cargar los astros: " + err.message);
+      setError("Ups, algo falló. Prueba más tarde. Log: " + err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchAjustes();
+  }, [fetchAjustes]);
+
+  // 4. Renderizado condicional
+  if (isLoading) return    <>  <ModalAlert isLoading={isLoading}></ModalAlert></>;
+  if (error) return <div className="alert alert-danger m-4">{error} <button onClick={fetchAjustes} className="btn btn-sm btn-outline-danger ms-3">Reintentar</button></div>;
+
   const actualizarValorH = (nuevoValor) => {
     setAnguloH(nuevoValor);
     enviarInfoAnt(nuevoValor, anguloV);
   };
-  /*  useEffect(() => {
-    // **Verificación clave:** Ignora la primera ejecución del componente.
-    if (isInitialMount.current) {
-      isInitialMount.current = false;
-      return;
-    }
 
-      //if (!isLoading) {
-    enviarInfoAnt();
-    //  }
-    
-  }, [anguloH, anguloV]); // Depende de ambos estados
-  */
-  /*
-    useEffect(() => {
-      enviarInfoAnt();
-    }, [anguloH]);*/
   const actualizarValorV = (nuevoValor) => {
     setAnguloV(nuevoValor);
     enviarInfoAnt(anguloH, nuevoValor);
   };
-  /*
-  useEffect(() => {
-    enviarInfoAnt();
-  }, [anguloV]);
-*/
-
-  //const user = localStorage.getItem('user');//JSON.parse(); // Asumiendo que guardas los datos del usuario
-  /*const handleSliderChange = (newValues) => {
-     // newValues es un array, e.g., [nuevo_angulo_1, nuevo_angulo_2]
-     setAngulos(newValues);
-   };*/
-
 
 
   const enviarInfoAnt = (h, v) => {

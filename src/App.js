@@ -1,10 +1,10 @@
 import React from 'react';
-import {  Routes, Route, BrowserRouter } from 'react-router-dom';
+import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import Login from "./components/Login";
-import Dashboard from './pages/Dashboard';
 import Estrellas from './pages/Estrellas';
 import Ajustes from './pages/Ajustes';
 import Config from './pages/Config';
+import Logs from './pages/Logs';
 import Layout from './components/Layout';
 import PrivateRoute from './components/PrivateRoute';
 import './App.css';
@@ -17,12 +17,7 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={
             <PrivateRoute>
-              <Dashboard />
-            </PrivateRoute>
-          } />
-          <Route path="dashboard" element={
-            <PrivateRoute>
-              <Dashboard />
+              <Estrellas />
             </PrivateRoute>
           } />
           <Route path="stars" element={
@@ -40,9 +35,15 @@ function App() {
               <Ajustes />
             </PrivateRoute>
           } />
+        
+        <Route path="logs" element={
+          <PrivateRoute>
+            <Logs />
+          </PrivateRoute>
+        } />
         </Route>
       </Routes>
-    </BrowserRouter>
+    </BrowserRouter >
   );
 }
 

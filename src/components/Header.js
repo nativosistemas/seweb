@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Navbar, Container, Nav } from 'react-bootstrap';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate ,useLocation} from 'react-router-dom';
 import { getUrl, getToken } from '../components/utils';
 import { ModalAlert } from "../components/ModalAlert";
 
@@ -105,6 +105,8 @@ const LaserIcon = ({ mostrarOn }) => {
 
 
 const Header = () => {
+    const location = useLocation();
+
     const [mostrarOn, setMostrarOn] = useState(() => {
         const guardado = localStorage.getItem('laserState');
         return guardado ? JSON.parse(guardado) : false;
@@ -126,6 +128,20 @@ const Header = () => {
         localStorage.setItem('laserState', JSON.stringify(mostrarOn));
     }, [mostrarOn]);
 
+const activeStyle = (paths) => {
+// Convertimos el argumento en un arreglo si no lo es
+    const pathList = Array.isArray(paths) ? paths : [paths];
+    
+    // Verificamos si la ubicación actual coincide con alguna de las rutas de la lista
+    const isActive = pathList.includes(location.pathname);
+
+    return {
+        backgroundColor: isActive ? 'rgba(255, 255, 255, 0.2)' : 'transparent',
+        borderRadius: '8px',
+        transition: 'background-color 0.3s ease'
+    };
+};
+
     const fetchServoData = useCallback(async () => {
         try {
             var data = {};
@@ -142,23 +158,23 @@ const Header = () => {
                 },
                 body: json
             }).catch((err) => {
-                mostrarAlerta("Error al obtener datos del láser: (2)" + err.message);
+              //  mostrarAlerta("Error al obtener datos del láser: (2)" + err.message);
             });
 
             if (!response.ok) {
 
                 //mostrarAlerta("Error al obtener datos del láser");
-               // throw new Error(`HTTP error! status: ${response.status}`);
-            }else{
+                // throw new Error(`HTTP error! status: ${response.status}`);
+            } else {
 
-            const data_response = await response.json();
-            //localStorage.setItem('laserState', JSON.stringify(data_response.isLaser === 1 ? true : false));
-            setMostrarOn(data_response.isLaser === 1 ? true : false);
+                const data_response = await response.json();
+                //localStorage.setItem('laserState', JSON.stringify(data_response.isLaser === 1 ? true : false));
+                setMostrarOn(data_response.isLaser === 1 ? true : false);
             }
 
         } catch (err) {
-            //  console.error("Error fetching servo data:", err);
-            mostrarAlerta("Error al obtener datos del láser: (1)" + err.message);
+           // no mostrar
+            //mostrarAlerta("Error al obtener datos del láser: (1)" + err.message);
         } finally {
             //   setIsLoading(false);
         }
@@ -209,10 +225,10 @@ const Header = () => {
                 }
                 )
                 .then((data) => {
-                    if (data.msg === "!isFoundAntTracking") { 
-                            mostrarAlerta("Dispositivo no encontrado. Asegúrate de que esté encendido y dentro del alcance.");
+                    if (data.msg === "!isFoundAntTracking") {
+                        mostrarAlerta("Dispositivo no encontrado. Asegúrate de que esté encendido y dentro del alcance.");
                     } else {
-                        setMostrarOn(!mostrarOn); 
+                        setMostrarOn(!mostrarOn);
                     }
                 })
                 .catch((err) => {
@@ -285,6 +301,7 @@ const Header = () => {
                         as={Link}
                         to="/stars"
                         title="Estrellas"
+                        style={activeStyle(['/', '/stars'])}
                     >
                         <StarIcon />
                     </Nav.Link>
@@ -300,6 +317,7 @@ const Header = () => {
                         as={Link}
                         to="/ajustes" // Cambia la ruta a donde deba ir
                         title="Ajustes"
+                        style={activeStyle('/ajustes')}
                     >
                         <GearIcon />
                     </Nav.Link>
@@ -307,6 +325,7 @@ const Header = () => {
                         as={Link}
                         to="/config" // Cambia la ruta a donde deba ir
                         title="Configuración"
+                        style={activeStyle('/config')}
                     >
                         <ConfiguracionIcon />
                     </Nav.Link>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState,useCallback } from "react";
 import { Row, Col, ListGroup, Card } from 'react-bootstrap';
 import { getUrl, getToken } from '../components/utils';
 import { ModalAlert } from "../components/ModalAlert";
@@ -11,8 +11,45 @@ export default function Estrellas() {
     const [itemExpandido, setItemExpandido] = useState(null);
     const [mensajeCardClick, setMensajeCardClick] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const fetchStars = useCallback(async () => {
+        setIsLoading(true);
+        setError(null);
+
+        try {
+            const response = await fetch(getUrl() + "/estrellas", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + getToken() // Asegúrate de que el token esté en el formato correcto
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`Error en el servidor: ${response.status}`);
+            }
+
+            const data = await response.json();
+            setEstrellas(data); // Guardamos el JSON en el estado
+
+        } catch (err) {
+            console.error("Error al obtener astros:", err);
+            //setError("No se pudieron cargar los astros: " + err.message);
+            setError("Ups, algo falló. Prueba más tarde. Log: " + err.message);
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
 
     useEffect(() => {
+        fetchStars();
+    }, [fetchStars]);
+
+    // 4. Renderizado condicional
+    if (isLoading) return <ModalAlert isLoading={isLoading}></ModalAlert>;
+    if (error) return <div className="alert alert-danger m-4">{error} <button onClick={fetchStars} className="btn btn-sm btn-outline-danger ms-3">Reintentar</button></div>;
+
+    /*useEffect(() => {
         fetch(getUrl() + "/estrellas", {
             method: "GET",
             headers: {
@@ -23,7 +60,7 @@ export default function Estrellas() {
             .then((res) => res.json())
             .then((data) => setEstrellas(data))
             .catch((err) => console.error("Error:", err));
-    }, []);
+    }, []);*/
 
     const toggleExpandir = (e, i) => {
 
@@ -48,8 +85,10 @@ export default function Estrellas() {
             })
                 .then((res) => res.json())
                 .then((data) => { setTitulo("Resultado"); setMensajeCardClick(data.msg); })
-                .catch((err) => { console.error("Error:", err);
-                     console.log("Error:", err); })
+                .catch((err) => {
+                    console.error("Error:", err);
+                    console.log("Error:", err);
+                })
                 .finally(() => { localStorage.setItem("Estrellas_onClick", null); setIsLoading(false); });
             setItemExpandido(itemExpandido === i ? null : i); //setItemExpandido(null);
             //setItemExpandido(null);
@@ -92,17 +131,17 @@ export default function Estrellas() {
                                             </Row>
                                         </small>
                                         {itemExpandido === i && (
-                                        <Card style={{ marginTop: '1rem', backgroundColor: 'rgba(25, 135, 84, 0.7)' }}>
-                                            <Card.Body>
-                                                <Card.Title>{titulo}</Card.Title>
-                                                <Card.Text>
-                                                    {mensajeCardClick}
-                                                </Card.Text>
-                                            </Card.Body>
-                                        </Card>
-                                    )}
+                                            <Card style={{ marginTop: '1rem', backgroundColor: 'rgba(25, 135, 84, 0.7)' }}>
+                                                <Card.Body>
+                                                    <Card.Title>{titulo}</Card.Title>
+                                                    <Card.Text>
+                                                        {mensajeCardClick}
+                                                    </Card.Text>
+                                                </Card.Body>
+                                            </Card>
+                                        )}
                                     </Card.Text>
-                                    
+
                                 </Card.Body>
                             </Card>
                         </ListGroup.Item>
