@@ -66,6 +66,7 @@ const Config = () => {
   };
 
   if (isLoading) return <ModalAlert isLoading={isLoading} />;
+  if (error) return <div className="alert alert-danger m-4">{error} <button onClick={fetchConfig} className="btn btn-sm btn-outline-danger ms-3">Reintentar</button></div>;
 
   return (
     <div className="container mt-4">
