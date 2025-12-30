@@ -1,137 +1,138 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom'; // Para el botón volver
 import { getUrl, getToken } from '../components/utils';
 import { ModalAlert } from '../components/ModalAlert';
 
 const Config = () => {
-  const navigate = useNavigate();
-
-
-  // 1. Estado para todos los campos del formulario
+  // 1. Estado alineado EXACTAMENTE con la clase ConfigAnt de .NET
   const [config, setConfig] = useState({
     latitude: 0.0,
     longitude: 0.0,
-    h_min: 0.0,
-    h_max: 0.0,
-    v_min: 0.0,
-    v_max: 0.0,
-    h_calibrate: 0.0,
-    v_calibrate: 0.0,
+    altitude: 0.0,
+    horizontal_grados_min: 0.0,
+    horizontal_grados_max: 0.0,
+    vertical_grados_min: 0.0,
+    vertical_grados_max: 0.0,
+    horizontal_grados_calibrate: 0.0,
+    vertical_grados_calibrate: 0.0,
     device_name: '',
-    v_sentido: false,
-    h_sentido: false
+    vertical_sentido: 1, // Usamos 1 o -1 según el double de C#
+    horizontal_sentido: 1
   });
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // 2. Manejador genérico para inputs
-  const handleChange = (e) => {
-    const { id, value, type, checked } = e.target;
-    // Quitamos el prefijo "txt_" para que coincida con las llaves del estado
-    const fieldName = id.replace('txt_', '');
-
-    setConfig({
-      ...config,
-      [fieldName]: type === 'checkbox' ? checked : value
-    });
-  };
-
-  const onClickGrabarConfig = () => {
-    console.log("Grabando configuración:", config);
-    alert("Configuración enviada");
-  };
   const fetchConfig = useCallback(async () => {
     setIsLoading(true);
     setError(null);
-
     try {
-      const response = await fetch(getUrl() + "/logs", { // Ajusta el endpoint "/logs"
-        method: "GET", // O POST dependiendo de tu API
+      const response = await fetch(getUrl() + "/getConfig", {
         headers: {
-          "Content-Type": "application/json",
           "Authorization": "Bearer " + getToken()
         }
       });
-
-      if (!response.ok) {
-        throw new Error(`Error en el servidor: ${response.status}`);
-      }
-
+      if (!response.ok) throw new Error(`Error: ${response.status}`);
       const data = await response.json();
-      //setLogs(data); // Guardamos el JSON en el estado
-
+      setConfig(data);
     } catch (err) {
-      console.error("Error al obtener logs:", err);
-      setError("No se pudieron cargar los logs: " + err.message);
+      setError(err.message);
     } finally {
       setIsLoading(false);
     }
   }, []);
-  useEffect(() => {
-    fetchConfig();
-  }, [fetchConfig]);
-  
-  if (isLoading) return  <ModalAlert isLoading={isLoading}></ModalAlert>;
-  if (error) return <div className="alert alert-danger m-4">{error} <button onClick={fetchConfig} className="btn btn-sm btn-outline-danger ms-3">Reintentar</button></div>;
+
+  useEffect(() => { fetchConfig(); }, [fetchConfig]);
+
+  const handleChange = (e) => {
+    const { id, value, type, checked } = e.target;
+    const fieldName = id.replace('txt_', '');
+
+    let finalValue = value;
+    
+    // Manejo especial para que el checkbox mande 1 o -1 al double de C#
+    if (type === 'checkbox') {
+      finalValue = checked ? 1 : -1;
+    } else if (type === 'number') {
+      finalValue = parseFloat(value);
+    }
+
+    setConfig(prev => ({ ...prev, [fieldName]: finalValue }));
+  };
+
+  const onClickGrabarConfig = async () => {
+    // Aquí deberías hacer el fetch POST a tu API
+    console.log("Enviando a .NET:", config);
+    alert("Configuración enviada correctamente");
+  };
+
+  if (isLoading) return <ModalAlert isLoading={isLoading} />;
 
   return (
     <div className="container mt-4">
-      {isLoading && <div className="loading">Loading…</div>}
-
-      <div className="d-flex justify-content-between align-items-center mb-3">
-        <h2>Configuración</h2>
-        {/*   <button onClick={fetchLogs} className="btn btn-primary btn-sm">Actualizar</button>*/}
-      </div>
-
-      <div className="row row-cols-1 row-cols-md-2">
-        <div className="col">
-          {/* Inputs Numéricos */}
+      <h2>Configuración del Sistema</h2>
+      <div className="row">
+        <div className="col-md-6">
+          {/* Mapeo dinámico con los nombres de la clase C# */}
           {[
-            { id: 'txt_latitude', label: 'Latitud' },
-            { id: 'txt_longitude', label: 'Longitud' },
-            { id: 'txt_h_min', label: 'Horizontal Grados Min' },
-            { id: 'txt_h_max', label: 'Horizontal Grados Max' },
-            { id: 'txt_v_min', label: 'Vertical Grados Min' },
-            { id: 'txt_v_max', label: 'Vertical Grados Max' },
-            { id: 'txt_h_calibrate', label: 'Horizontal Calibrate' },
-            { id: 'txt_v_calibrate', label: 'Vertical Calibrate' },
-          ].map((field) => (
-            <div className="mb-3" key={field.id}>
-              <label htmlFor={field.id} className="form-label">{field.label}</label>
+            { id: 'latitude', label: 'Latitud' },
+            { id: 'longitude', label: 'Longitud' },
+            { id: 'altitude', label: 'Altitud' },
+            { id: 'horizontal_grados_min', label: 'H-Grados Min' },
+            { id: 'horizontal_grados_max', label: 'H-Grados Max' },
+            { id: 'vertical_grados_min', label: 'V-Grados Min' },
+            { id: 'vertical_grados_max', label: 'V-Grados Max' },
+            { id: 'horizontal_grados_calibrate', label: 'H-Calibración' },
+            { id: 'vertical_grados_calibrate', label: 'V-Calibración' },
+          ].map((f) => (
+            <div className="mb-3" key={f.id}>
+              <label className="form-label">{f.label}</label>
               <input
                 type="number"
                 className="form-control"
-                id={field.id}
+                id={`txt_${f.id}`}
+                value={config[f.id] || 0}
                 onChange={handleChange}
-                placeholder="0.0"
               />
             </div>
           ))}
 
           <div className="mb-3">
-            <label htmlFor="txt_device_name" className="form-label">Device Name</label>
-            <input type="text" className="form-control" id="txt_device_name" onChange={handleChange} />
+            <label className="form-label">Nombre del Dispositivo</label>
+            <input 
+              type="text" 
+              className="form-control" 
+              id="txt_device_name" 
+              value={config.device_name || ''} 
+              onChange={handleChange} 
+            />
+          </div>
+
+          {/* Checkboxes manejados como sentido (1 o -1) */}
+          <div className="mb-3 form-check">
+            <input 
+              type="checkbox" 
+              className="form-check-input" 
+              id="txt_horizontal_sentido" 
+              checked={config.horizontal_sentido === 1} 
+              onChange={handleChange} 
+            />
+            <label className="form-check-label">Invertir Sentido Horizontal</label>
           </div>
 
           <div className="mb-3 form-check">
-            <input type="checkbox" className="form-check-input" id="txt_v_sentido" onChange={handleChange} />
-            <label className="form-check-label" htmlFor="txt_v_sentido">Vertical Sentido</label>
+            <input 
+              type="checkbox" 
+              className="form-check-input" 
+              id="txt_vertical_sentido" 
+              checked={config.vertical_sentido === 1} 
+              onChange={handleChange} 
+            />
+            <label className="form-check-label">Invertir Sentido Vertical</label>
           </div>
 
-          <div className="mb-3 form-check">
-            <input type="checkbox" className="form-check-input" id="txt_h_sentido" onChange={handleChange} />
-            <label className="form-check-label" htmlFor="txt_h_sentido">Horizontal Sentido</label>
-          </div>
-
-          <button type="button" className="btn btn-primary w-100" onClick={onClickGrabarConfig}>Grabar Configuración</button>
-        </div>
-
-        <div className="col mt-4 mt-md-0">
-          <div id="divMsg" className="p-3 border bg-light rounded">
-            {/* Aquí puedes mostrar mensajes de estado */}
-            <small className="text-muted">Estado del sistema listo.</small>
-          </div>
+          <button className="btn btn-primary w-100" onClick={onClickGrabarConfig}>
+            Grabar en Servidor
+          </button>
         </div>
       </div>
     </div>
