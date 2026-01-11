@@ -186,12 +186,12 @@ const Config = () => {
     //prev => ({ ...prev, [fieldName]: finalValue }));
     // Ejemplo de uso
 
-    const result = await sendConfig(newConfig, false);
+     await sendConfig(newConfig, false);
     //console.log("Respuesta del servidor:", result);
   };
 
   const onClickGrabarConfig = async () => {
-    const result = await sendConfig(config);
+     await sendConfig(config);
   };
 
   if (isLoading) return <ModalAlert isLoading={isLoading} />;

@@ -17,7 +17,7 @@ const Calibracion = () => {
     const [horizontal_grados_calibrate, setHorizontal_grados_calibrate] = useState(null);
     const [vertical_grados_calibrate, setVertical_grados_calibrate] = useState(null);
 
-    const [config, setConfig] = useState({
+    /*const [setConfig] = useState({
         latitude: 0.0,
         longitude: 0.0,
         altitude: 0.0,
@@ -30,7 +30,7 @@ const Calibracion = () => {
         device_name: '',
         vertical_sentido: 1, // Usamos 1 o -1 según el double de C#
         horizontal_sentido: 1
-    });
+    });*/
 
       const hijoRef = useRef(null);
 
@@ -52,7 +52,7 @@ const Calibracion = () => {
             });
             if (!response.ok) throw new Error(`Error: ${response.status}`);
             const data = await response.json();
-            setConfig(data);
+            //setConfig(data);
             setHorizontal_grados_calibrate(data.horizontal_grados_calibrate); 
             setVertical_grados_calibrate(data.vertical_grados_calibrate); 
         } catch (err) {

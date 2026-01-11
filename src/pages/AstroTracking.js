@@ -115,38 +115,3 @@ export default function AstroTracking() {
     </div>
   );
 };
-
-
-
-
-
-// Ejemplo de uso
-const registrosEjemplo = [
-  {
-    publicID: "4e8fc582-b903-4b3e-a097-588e5dc8f098",
-    type: "star",
-    date: "2026-01-04T01:30:24.4489134",
-    ra: 131.32202815495253,
-    dec: -54.786603893774846,
-    altitude: null,
-    azimuth: null,
-    h: null,
-    v: null,
-    info: null,
-    tracking: false,
-    status: "noResponseEsp32",
-    statusUpdateDate: "2026-01-04T01:31:08.8283437",
-    sessionDevice_publicID: "00000000-0000-0000-0000-000000000000",
-    sessionApp_publicID: "e5c0494e-6477-42b3-8be5-6d062a02ea54",
-    isLaser: 0,
-    _h_calibrate: null,
-    _v_calibrate: null,
-    device_name: "esp32_stepper_laser"
-  }
-];
-
-
-
-/*export default function AstroTracking() {
-  return <RegistroTable registros={registrosEjemplo} />;
-}*/
