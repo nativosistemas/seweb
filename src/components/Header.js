@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Navbar, Container, Nav } from 'react-bootstrap';
-import { Link, useNavigate ,useLocation} from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { getUrl, getToken } from '../components/utils';
 import { ModalAlert } from "../components/ModalAlert";
 
@@ -70,7 +70,25 @@ const CloseIcon = () => (
         />
     </svg>
 );
-
+const CalibrateIcon = () => (
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="32"
+        height="32"
+        // 'currentColor' hereda el color del texto/icono del botón
+        fill="none" //none *** currentColor
+        className="bi bi-gear"
+        viewBox="0 0 24 24"
+    >
+        <path d="M2 12L5 12" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+        <path d="M19 12L22 12" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+        <path d="M12 22L12 19" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+        <path d="M12 5L12 2" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+        <path d="M10 12H12H14" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M12 14L12 12L12 10" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+    </svg>
+);
 const LaserOnIcon = () => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -128,19 +146,19 @@ const Header = () => {
         localStorage.setItem('laserState', JSON.stringify(mostrarOn));
     }, [mostrarOn]);
 
-const activeStyle = (paths) => {
-// Convertimos el argumento en un arreglo si no lo es
-    const pathList = Array.isArray(paths) ? paths : [paths];
-    
-    // Verificamos si la ubicación actual coincide con alguna de las rutas de la lista
-    const isActive = pathList.includes(location.pathname);
+    const activeStyle = (paths) => {
+        // Convertimos el argumento en un arreglo si no lo es
+        const pathList = Array.isArray(paths) ? paths : [paths];
 
-    return {
-        backgroundColor: isActive ? 'rgba(255, 255, 255, 0.2)' : 'transparent',
-        borderRadius: '8px',
-        transition: 'background-color 0.3s ease'
+        // Verificamos si la ubicación actual coincide con alguna de las rutas de la lista
+        const isActive = pathList.includes(location.pathname);
+
+        return {
+            backgroundColor: isActive ? 'rgba(255, 255, 255, 0.2)' : 'transparent',
+            borderRadius: '8px',
+            transition: 'background-color 0.3s ease'
+        };
     };
-};
 
     const fetchServoData = useCallback(async () => {
         try {
@@ -158,7 +176,7 @@ const activeStyle = (paths) => {
                 },
                 body: json
             }).catch((err) => {
-              //  mostrarAlerta("Error al obtener datos del láser: (2)" + err.message);
+                //  mostrarAlerta("Error al obtener datos del láser: (2)" + err.message);
             });
 
             if (!response.ok) {
@@ -173,7 +191,7 @@ const activeStyle = (paths) => {
             }
 
         } catch (err) {
-           // no mostrar
+            // no mostrar
             //mostrarAlerta("Error al obtener datos del láser: (1)" + err.message);
         } finally {
             //   setIsLoading(false);
@@ -312,6 +330,14 @@ const activeStyle = (paths) => {
                         title="Laser"
                     >
                         <LaserIcon mostrarOn={mostrarOn} />
+                    </Nav.Link>
+                    <Nav.Link
+                        as={Link}
+                        to="/calibracion" // Cambia la ruta a donde deba ir
+                        title="Calibración"
+                        style={activeStyle('/calibracion')}
+                    >
+                        <CalibrateIcon />
                     </Nav.Link>
                     <Nav.Link
                         as={Link}

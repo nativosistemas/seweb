@@ -126,7 +126,7 @@ export default function Ajustes() {
 
   return (
     <div className="container">
-      <h3>Control de Ángulos (0&deg; a 180&deg;)</h3>
+      <h2>Control de Ángulos (0&deg; a 180&deg;)</h2>
       <div class="form-check">
         <input class="form-check-input" type="checkbox" value={isModo} checked={isModo} id="flexCheckDefault" onChange={handleCheckboxChange}></input>
         <label class="form-check-label" for="flexCheckDefault">

@@ -37,7 +37,7 @@ const Login = () => {
             // Guardar token en localStorage o contexto
             localStorage.setItem("token", data);
             localStorage.setItem("user", { name: email, pass: password });
-            navigate('/dashboard');
+            navigate('/');
         } catch (error) {
             setError("Ups, algo falló. Prueba más tarde.");
         } finally {

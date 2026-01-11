@@ -6,10 +6,10 @@ import { Outlet } from 'react-router-dom'; // Importa Outlet para el contenido d
 const Layout = () => {
   return (
     <div>
-      <Header />
+      <Header/>
       {/* El main contendrá el contenido de la página actual */}
-      <main > {/* Añade padding-bottom para que el contenido no quede debajo del footer fijo */}
-        <Outlet /> 
+      <main> {/* Añade padding-bottom para que el contenido no quede debajo del footer fijo */}
+        <Outlet/> 
       </main>
 
     </div>
