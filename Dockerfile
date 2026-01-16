@@ -18,7 +18,7 @@ RUN npm run build
 FROM nginx:alpine
 
 # Copiamos los archivos generados al directorio de Nginx
-COPY --from=build /app/build /usr/share/nginx/html
+COPY --from=build /app/build /usr/share/nginx/html/seweb
 
 # Exponemos el puerto 80
 EXPOSE 80
