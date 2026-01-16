@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route, BrowserRouter, Link } from 'react-router-dom';
+import { Routes, Route, HashRouter , Link } from 'react-router-dom';
 import Login from "./components/Login";
 import Estrellas from './pages/Estrellas';
 import Ajustes from './pages/Ajustes';
@@ -13,7 +13,7 @@ import './App.css';
 
 function App() {
   return (
-    <HashRouter basename="/seweb">
+    <HashRouter >
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<Layout />}>
@@ -24,7 +24,7 @@ function App() {
           } />
           <Route path="stars" element={
             <PrivateRoute>
-              <Estrellas />|
+              <Estrellas />
             </PrivateRoute>
           } />
           <Route path="config" element={
