@@ -300,19 +300,19 @@ const Header = () => {
     };
 
     return (<>      <ModalAlert isLoading={isLoading}></ModalAlert>
-        <Navbar expand="lg" sticky="top" style={{
+        <Navbar sticky="top" style={{
             backgroundColor: 'rgba(128, 128, 128, 0.6)',
             display: 'flex',
             flexDirection: 'column', // Importante: apila el Container y la Alerta
             padding: 0 // Elimina padding para que la alerta toque los bordes
         }}>
-            <Container >
+            <Container style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                 {/*  <Navbar.Brand as={Link} to="/">Señalador de estrellas</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
  
                 </Navbar.Collapse>*/}
-                <Nav className="me-auto">
+                <Nav className="flex-row">
                     {/*<Nav.Link as={Link} to="/">Inicio</Nav.Link>
                         <Nav.Link as={Link} to="/dashboard">Estrellas</Nav.Link>*/}
                     <Nav.Link
@@ -320,6 +320,7 @@ const Header = () => {
                         to="/stars"
                         title="Estrellas"
                         style={activeStyle(['/', '/stars'])}
+                        className="px-2"
                     >
                         <StarIcon />
                     </Nav.Link>
@@ -328,6 +329,7 @@ const Header = () => {
                         //to="/stars"
                         onClick={onClickLaser}
                         title="Laser"
+                        className="px-2"
                     >
                         <LaserIcon mostrarOn={mostrarOn} />
                     </Nav.Link>
@@ -336,6 +338,7 @@ const Header = () => {
                         to="/calibracion" // Cambia la ruta a donde deba ir
                         title="Calibración"
                         style={activeStyle('/calibracion')}
+                        className="px-2"
                     >
                         <CalibrateIcon />
                     </Nav.Link>
@@ -344,6 +347,7 @@ const Header = () => {
                         to="/ajustes" // Cambia la ruta a donde deba ir
                         title="Ajustes"
                         style={activeStyle('/ajustes')}
+                        className="px-2"
                     >
                         <GearIcon />
                     </Nav.Link>
@@ -352,6 +356,7 @@ const Header = () => {
                         to="/config" // Cambia la ruta a donde deba ir
                         title="Configuración"
                         style={activeStyle('/config')}
+                        className="px-2"
                     >
                         <ConfiguracionIcon />
                     </Nav.Link>
