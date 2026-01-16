@@ -13,7 +13,7 @@ import './App.css';
 
 function App() {
   return (
-    <BrowserRouter basename="/seweb">
+    <HashRouter basename="/seweb">
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<Layout />}>
@@ -62,7 +62,7 @@ function App() {
           </div>
         } />
       </Routes>
-    </BrowserRouter >
+    </HashRouter>
   );
 }
 
